@@ -1,6 +1,7 @@
-package com.harunbekcan.roomdatabasewithpaging3project.data
+package com.harunbekcan.roomdatabasewithpaging3project.data.api
 
 import com.harunbekcan.roomdatabasewithpaging3project.base.BasePagingResponse
+import com.harunbekcan.roomdatabasewithpaging3project.data.response.PopularTvResponseItem
 import com.harunbekcan.roomdatabasewithpaging3project.utils.Constant.API_KEY
 import retrofit2.Call
 import retrofit2.http.GET

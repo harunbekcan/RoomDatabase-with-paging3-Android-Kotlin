@@ -1,4 +1,4 @@
-package com.harunbekcan.roomdatabasewithpaging3project.data
+package com.harunbekcan.roomdatabasewithpaging3project.data.response
 
 data class PopularTvResponseItem(
     val backdrop_path: String,

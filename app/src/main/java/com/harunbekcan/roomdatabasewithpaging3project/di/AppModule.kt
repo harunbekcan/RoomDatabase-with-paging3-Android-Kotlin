@@ -1,6 +1,6 @@
 package com.harunbekcan.roomdatabasewithpaging3project.di
 
-import com.harunbekcan.roomdatabasewithpaging3project.data.ServiceInterface
+import com.harunbekcan.roomdatabasewithpaging3project.data.api.ServiceInterface
 import com.harunbekcan.roomdatabasewithpaging3project.utils.Constant.BASE_URL
 import com.harunbekcan.roomdatabasewithpaging3project.utils.CustomHttpLogger
 import dagger.Module
