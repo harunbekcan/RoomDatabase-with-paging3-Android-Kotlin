@@ -71,6 +71,12 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
 
+    //Room
+    def room_version = "2.4.2"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
     //Paging3
     def paging_version = "3.1.1"
     implementation "androidx.paging:paging-runtime:$paging_version"
