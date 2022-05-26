@@ -1,0 +1,3 @@
+package com.harunbekcan.roomdatabasewithpaging3project.data.api.response
+
+interface PopularTvType

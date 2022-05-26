@@ -1,10 +1,14 @@
 package com.harunbekcan.roomdatabasewithpaging3project.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadState
+import com.blankj.utilcode.util.LogUtils
 import com.harunbekcan.roomdatabasewithpaging3project.R
 import com.harunbekcan.roomdatabasewithpaging3project.base.BaseFragment
 import com.harunbekcan.roomdatabasewithpaging3project.databinding.FragmentHomeBinding
@@ -26,6 +30,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
+        configureStateListener()
         pagingObserve()
     }
 
@@ -38,6 +43,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         lifecycleScope.launchWhenStarted {
             viewModel.getAllPopularTv().collectLatest { response->
                 popularTvPagingAdapter.submitData(response)
+            }
+        }
+    }
+    private fun configureStateListener() {
+        popularTvPagingAdapter.addLoadStateListener { loadState ->
+
+            val errorState = loadState.source.append as? LoadState.Error
+                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.append as? LoadState.Error
+                ?: loadState.prepend as? LoadState.Error
+            errorState?.let {
+                Toast.makeText(activity, errorState.error.localizedMessage, Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

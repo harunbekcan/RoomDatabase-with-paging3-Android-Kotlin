@@ -5,13 +5,14 @@ import android.content.Context
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.FieldNamingPolicy
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.harunbekcan.roomdatabasewithpaging3project.R
-import com.harunbekcan.roomdatabasewithpaging3project.data.api.ServiceInterface
-import com.harunbekcan.roomdatabasewithpaging3project.data.database.PopularTvDatabase
+import com.harunbekcan.roomdatabasewithpaging3project.data.api.service.ServiceInterface
+import com.harunbekcan.roomdatabasewithpaging3project.data.local.database.PopularTvDatabase
 import com.harunbekcan.roomdatabasewithpaging3project.utils.Constant.BASE_URL
 import com.harunbekcan.roomdatabasewithpaging3project.utils.CustomHttpLogger
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,12 +22,15 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    private val gson: Gson = GsonBuilder()
+        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+        .create()
 
     @Provides
     @Singleton
@@ -35,16 +39,10 @@ object AppModule {
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create(moshi()))
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()
     }
-
-    @Provides
-    @Singleton
-    fun moshi() = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()!!
 
     @Singleton
     @Provides

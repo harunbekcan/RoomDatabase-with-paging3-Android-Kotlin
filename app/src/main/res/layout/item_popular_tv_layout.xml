@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.harunbekcan.roomdatabasewithpaging3project.data.response.PopularTvItem" />
+            type="com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularTvDatabaseModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
