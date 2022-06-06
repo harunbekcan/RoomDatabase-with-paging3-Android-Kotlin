@@ -9,7 +9,9 @@ import com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularT
 import com.harunbekcan.roomdatabasewithpaging3project.data.remote.PopularTvRemoteMediator
 import com.harunbekcan.roomdatabasewithpaging3project.utils.Constant
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,8 +21,17 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     @ExperimentalPagingApi
     fun getAllPopularTv(): Flow<PagingData<PopularTvDatabaseModel>> = Pager(
-        config = PagingConfig(pageSize = 10, enablePlaceholders = true),
+        config = PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = true,
+            prefetchDistance = 5,
+            initialLoadSize = 40
+        ),
         pagingSourceFactory = { popularTvDatabase.getPopularTvDao().getPopularTvAll() },
-        remoteMediator = PopularTvRemoteMediator(serviceInterface, popularTvDatabase, Constant.API_KEY)
-    ).flow.cachedIn(viewModelScope)
+        remoteMediator = PopularTvRemoteMediator(
+            serviceInterface,
+            popularTvDatabase,
+            Constant.API_KEY
+        )
+    ).flow.cachedIn(viewModelScope).flowOn(Dispatchers.IO)
 }

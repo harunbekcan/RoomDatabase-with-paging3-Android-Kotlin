@@ -5,6 +5,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.blankj.utilcode.util.LogUtils
 import com.harunbekcan.roomdatabasewithpaging3project.data.api.service.ServiceInterface
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.database.PopularTvDatabase
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularTvDatabaseModel
@@ -82,12 +83,14 @@ class PopularTvRemoteMediator constructor(
     }
 
     private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, PopularTvDatabaseModel>): PopularTvRemoteKeys? {
+        LogUtils.d("ssss","a"+state.pages.toString())
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { repo ->
             popularTvDatabase.getPopularTvRemoteDao().remoteKeysByPopularTvId(repo.popularTvId)
         }
     }
 
     private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, PopularTvDatabaseModel>): PopularTvRemoteKeys? {
+        LogUtils.d("ssss","b"+state.pages.toString())
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { popularTv ->
             popularTvDatabase.getPopularTvRemoteDao().remoteKeysByPopularTvId(popularTv.popularTvId)
         }

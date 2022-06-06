@@ -22,6 +22,13 @@ abstract class BaseFragment<VDB : ViewDataBinding> : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        prepareView(savedInstanceState)
+    }
+
+    abstract fun prepareView(savedInstanceState: Bundle?)
+
     @LayoutRes
     abstract fun getLayoutId(): Int
 }

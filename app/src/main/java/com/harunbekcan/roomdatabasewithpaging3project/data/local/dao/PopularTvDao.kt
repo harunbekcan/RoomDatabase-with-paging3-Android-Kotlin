@@ -13,7 +13,7 @@ interface PopularTvDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(popularTvList: List<PopularTvDatabaseModel>)
 
-    @Query("SELECT * FROM popularTv")
+    @Query("select * from popularTv")
     fun getPopularTvAll(): PagingSource<Int, PopularTvDatabaseModel>
 
     @Query("DELETE FROM popularTv")

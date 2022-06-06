@@ -19,9 +19,6 @@ constructor() : PagingDataAdapter<PopularTvDatabaseModel, PopularTvPagingAdapter
     class PopularTvViewHolder(private val binding: ItemPopularTvLayoutBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(popularTvDatabaseModel: PopularTvDatabaseModel){
             binding.apply {
-                LogUtils.d("ssss1",popularTvDatabaseModel.name)
-                LogUtils.d("ssss1",popularTvDatabaseModel.original_language)
-                LogUtils.d("ssss1",popularTvDatabaseModel.poster_path)
                 popularTvNameTextView.text = popularTvDatabaseModel.name
                 popularTvLanguageTextView.text = popularTvDatabaseModel.original_language
                 val imageUrl = IMAGE_URL_START + popularTvDatabaseModel.poster_path
