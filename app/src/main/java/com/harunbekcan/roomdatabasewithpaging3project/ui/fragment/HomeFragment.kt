@@ -1,24 +1,18 @@
 package com.harunbekcan.roomdatabasewithpaging3project.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
-import com.blankj.utilcode.util.LogUtils
 import com.harunbekcan.roomdatabasewithpaging3project.R
 import com.harunbekcan.roomdatabasewithpaging3project.base.BaseFragment
 import com.harunbekcan.roomdatabasewithpaging3project.databinding.FragmentHomeBinding
 import com.harunbekcan.roomdatabasewithpaging3project.ui.adapter.PopularTvPagingAdapter
 import com.harunbekcan.roomdatabasewithpaging3project.ui.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
