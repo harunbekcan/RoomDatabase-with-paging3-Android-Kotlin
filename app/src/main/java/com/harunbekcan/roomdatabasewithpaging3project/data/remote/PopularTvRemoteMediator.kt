@@ -9,7 +9,6 @@ import com.harunbekcan.roomdatabasewithpaging3project.data.api.service.ServiceIn
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.database.PopularTvDatabase
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularTvDatabaseModel
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularTvRemoteKeys
-import com.harunbekcan.roomdatabasewithpaging3project.utils.Constant
 import com.harunbekcan.roomdatabasewithpaging3project.utils.mapDataToPopularTvItem
 import java.io.InvalidObjectException
 

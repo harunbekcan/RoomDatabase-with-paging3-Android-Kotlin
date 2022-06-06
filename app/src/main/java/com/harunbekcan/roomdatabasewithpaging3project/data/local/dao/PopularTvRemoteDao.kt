@@ -13,7 +13,7 @@ interface PopularTvRemoteDao {
     suspend fun insertAll(remoteKey: List<PopularTvRemoteKeys>)
 
     @Query("SELECT * FROM popular_tv_remote_keys WHERE id = :popularTvId")
-    suspend fun remoteKeysByPopularTvId(popularTvId: Long): PopularTvRemoteKeys?
+    suspend fun remoteKeysByPopularTvId(popularTvId: Int): PopularTvRemoteKeys?
 
     @Query("DELETE FROM popular_tv_remote_keys")
     suspend fun clearRemoteKeys()

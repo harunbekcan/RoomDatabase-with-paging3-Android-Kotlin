@@ -8,7 +8,7 @@ data class PopularTvResponse(
     val results: List<PopularTvResponseItem>?
 ) {
     data class PopularTvResponseItem(
-        val id: Long?,
+        val id: Int?,
         val name: String?,
         val original_language: String?,
         val poster_path: String?

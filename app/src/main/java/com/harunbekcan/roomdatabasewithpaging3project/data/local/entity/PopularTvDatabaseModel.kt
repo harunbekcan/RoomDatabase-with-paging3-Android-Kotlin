@@ -6,7 +6,7 @@ import com.harunbekcan.roomdatabasewithpaging3project.data.api.response.PopularT
 
 @Entity(tableName = "popularTv")
 data class PopularTvDatabaseModel(
-    val popularTvId: Long,
+    val popularTvId: Int,
     @PrimaryKey
     val name: String,
     val original_language: String,
