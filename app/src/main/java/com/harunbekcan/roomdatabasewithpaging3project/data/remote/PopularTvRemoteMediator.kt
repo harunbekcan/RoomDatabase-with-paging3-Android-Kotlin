@@ -8,95 +8,59 @@ import androidx.room.withTransaction
 import com.harunbekcan.roomdatabasewithpaging3project.data.api.service.ServiceInterface
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.database.PopularTvDatabase
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularTvDatabaseModel
-import com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularTvRemoteKeys
+import com.harunbekcan.roomdatabasewithpaging3project.utils.Constant
+import com.harunbekcan.roomdatabasewithpaging3project.utils.Constant.PAGE_NUMBER
 import com.harunbekcan.roomdatabasewithpaging3project.utils.mapDataToPopularTvItem
-import java.io.InvalidObjectException
-
 
 @OptIn(ExperimentalPagingApi::class)
-class PopularTvRemoteMediator constructor(
+class PopularTvRemoteMediator(
     private val serviceInterface: ServiceInterface,
     private val popularTvDatabase: PopularTvDatabase,
-    private val apiKey:String
+    private val pageSize: Int
 ) : RemoteMediator<Int, PopularTvDatabaseModel>() {
+
+    private var page = PAGE_NUMBER
+    private var endOfPaginationReached = false
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, PopularTvDatabaseModel>
+        state: PagingState<Int, PopularTvDatabaseModel>,
     ): MediatorResult {
 
-        val page = when (loadType) {
+        page = when (loadType) {
             LoadType.REFRESH -> {
-                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                remoteKeys?.nextKey?.minus(1) ?: 1
-            }
-
-            LoadType.APPEND -> {
-                val remoteKeys = getRemoteKeyForLastItem(state)
-                    ?: return MediatorResult.Error(InvalidObjectException("Result is empty"))
-
-                val nextKey = remoteKeys.nextKey ?: return MediatorResult.Success(
-                    endOfPaginationReached = true
-                )
-
-                nextKey
+                PAGE_NUMBER
             }
             LoadType.PREPEND -> {
-                val remoteKeys = getRemoteKeyForFirstItem(state)
-                    ?: return MediatorResult.Error(InvalidObjectException("Result is empty"))
-
-                val prevKey = remoteKeys.prevKey ?: return MediatorResult.Success(
+                return MediatorResult.Success(endOfPaginationReached = true)
+            }
+            LoadType.APPEND -> {
+                state.lastItemOrNull() ?: return MediatorResult.Success(
                     endOfPaginationReached = true
                 )
-
-                prevKey
+                page + 1
             }
         }
+
         try {
-            val response = serviceInterface.getPopularTv(apiKey, page)
+            val response = serviceInterface.getPopularTv(Constant.API_KEY, page)
             val data = response.mapDataToPopularTvItem()
+
+            if (data.popularTvList.size < pageSize) {
+                endOfPaginationReached = true
+            }
 
             popularTvDatabase.withTransaction {
                 // clear all tables in the database
                 if (loadType == LoadType.REFRESH) {
-                    popularTvDatabase.getPopularTvRemoteDao().clearRemoteKeys()
                     popularTvDatabase.getPopularTvDao().clearAll()
                 }
-                val prevKey = if (page == 1) null else page - 1
-                val nextKey = if (data.isEndOfListReached) null else page + 1
-                val keys = data.popularTvList.map {
-                    PopularTvRemoteKeys(
-                        id = it.popularTvId,
-                        prevKey = prevKey,
-                        nextKey = nextKey
-                    )
-                }
-                popularTvDatabase.getPopularTvRemoteDao().insertAll(keys)
                 popularTvDatabase.getPopularTvDao().insertAll(data.popularTvList)
             }
-            return MediatorResult.Success(endOfPaginationReached = data.isEndOfListReached)
+            return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
+
         } catch (e: Exception) {
             return MediatorResult.Error(e)
-        }
-    }
-
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, PopularTvDatabaseModel>): PopularTvRemoteKeys? {
-        return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { repo ->
-            popularTvDatabase.getPopularTvRemoteDao().remoteKeysByPopularTvId(repo.popularTvId)
-        }
-    }
-
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, PopularTvDatabaseModel>): PopularTvRemoteKeys? {
-        return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { popularTv ->
-            popularTvDatabase.getPopularTvRemoteDao().remoteKeysByPopularTvId(popularTv.popularTvId)
-        }
-    }
-
-    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, PopularTvDatabaseModel>): PopularTvRemoteKeys? {
-        return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.popularTvId?.let { id ->
-                popularTvDatabase.getPopularTvRemoteDao().remoteKeysByPopularTvId(id)
-            }
         }
     }
 }

@@ -7,7 +7,6 @@ import com.harunbekcan.roomdatabasewithpaging3project.data.api.service.ServiceIn
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.database.PopularTvDatabase
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularTvDatabaseModel
 import com.harunbekcan.roomdatabasewithpaging3project.data.remote.PopularTvRemoteMediator
-import com.harunbekcan.roomdatabasewithpaging3project.utils.Constant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -31,7 +30,7 @@ class HomeViewModel @Inject constructor(
         remoteMediator = PopularTvRemoteMediator(
             serviceInterface,
             popularTvDatabase,
-            Constant.API_KEY
+            20
         )
     ).flow.cachedIn(viewModelScope).flowOn(Dispatchers.IO)
 }

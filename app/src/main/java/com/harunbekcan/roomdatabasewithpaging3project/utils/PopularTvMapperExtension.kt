@@ -7,7 +7,6 @@ import com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularT
 fun PopularTvResponse.mapDataToPopularTvItem(): PopularTvItem =
     with(this) {
         PopularTvItem(
-            total_pages = total_pages,
             page = page,
             popularTvList = results?.map {
                 PopularTvDatabaseModel(
