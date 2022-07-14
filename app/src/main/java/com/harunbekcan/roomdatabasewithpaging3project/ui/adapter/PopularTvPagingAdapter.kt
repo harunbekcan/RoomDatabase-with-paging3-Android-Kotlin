@@ -1,6 +1,5 @@
 package com.harunbekcan.roomdatabasewithpaging3project.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,22 +11,21 @@ import com.harunbekcan.roomdatabasewithpaging3project.R
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularTvDatabaseModel
 import com.harunbekcan.roomdatabasewithpaging3project.databinding.ItemPopularTvLayoutBinding
 import com.harunbekcan.roomdatabasewithpaging3project.utils.Constant.IMAGE_URL_START
+import com.harunbekcan.roomdatabasewithpaging3project.utils.Constant.IS_FAVORITE_TRUE
 import com.harunbekcan.roomdatabasewithpaging3project.utils.loadImage
 import javax.inject.Inject
 
 class PopularTvPagingAdapter
-@Inject
-constructor() :
-    PagingDataAdapter<PopularTvDatabaseModel, PopularTvPagingAdapter.PopularTvViewHolder>(DiffUtils) {
+@Inject constructor() : PagingDataAdapter<PopularTvDatabaseModel, PopularTvPagingAdapter.PopularTvViewHolder>(DiffUtils) {
 
-    private var listener: FavoritesAdapterListener? = null
+    private var listener: AddToFavoritesAdapterListener? = null
 
-    fun setListener(listener: FavoritesAdapterListener) {
+    fun setListener(listener: AddToFavoritesAdapterListener) {
         this.listener = listener
     }
 
-    interface FavoritesAdapterListener {
-        fun favoritesPagingAdapterItemClicked(data: PopularTvDatabaseModel?, view: View)
+    interface AddToFavoritesAdapterListener {
+        fun addToFavoritesPagingAdapterItemClicked(data: PopularTvDatabaseModel?, view: View)
     }
 
     inner class PopularTvViewHolder(private val binding: ItemPopularTvLayoutBinding) :
@@ -39,14 +37,14 @@ constructor() :
                 val imageUrl = IMAGE_URL_START + popularTvDatabaseModel.poster_path
                 popularTvImageView.loadImage(imageUrl)
 
-                if (popularTvDatabaseModel.isFavorite == 1){
-                    favoriteButtonImageView.setImageDrawable(ContextCompat.getDrawable(itemView.context,R.drawable.ic_favorite_selected))
+                if (popularTvDatabaseModel.isFavorite == IS_FAVORITE_TRUE){
+                    favoriteStatusButtonImageView.setImageDrawable(ContextCompat.getDrawable(itemView.context,R.drawable.ic_favorite_selected))
                 } else {
-                    favoriteButtonImageView.setImageDrawable(ContextCompat.getDrawable(itemView.context,R.drawable.ic_favorite_unselected))
+                    favoriteStatusButtonImageView.setImageDrawable(ContextCompat.getDrawable(itemView.context,R.drawable.ic_favorite_unselected))
                 }
 
-                favoriteButtonImageView.setOnClickListener {
-                    listener?.favoritesPagingAdapterItemClicked(popularTvDatabaseModel, it)
+                favoriteStatusButtonImageView.setOnClickListener {
+                    listener?.addToFavoritesPagingAdapterItemClicked(popularTvDatabaseModel, it)
                 }
             }
         }
@@ -70,18 +68,12 @@ constructor() :
     }
 
     object DiffUtils : DiffUtil.ItemCallback<PopularTvDatabaseModel>() {
-        override fun areItemsTheSame(
-            oldDatabaseModel: PopularTvDatabaseModel,
-            newDatabaseModel: PopularTvDatabaseModel
-        ): Boolean {
-            return oldDatabaseModel.popularTvId == newDatabaseModel.popularTvId
+        override fun areItemsTheSame(oldItem: PopularTvDatabaseModel, newItem: PopularTvDatabaseModel): Boolean {
+            return oldItem.popularTvId == newItem.popularTvId
         }
 
-        override fun areContentsTheSame(
-            oldDatabaseModel: PopularTvDatabaseModel,
-            newDatabaseModel: PopularTvDatabaseModel
-        ): Boolean {
-            return oldDatabaseModel == newDatabaseModel
+        override fun areContentsTheSame(oldItem: PopularTvDatabaseModel, newItem: PopularTvDatabaseModel): Boolean {
+            return oldItem == newItem
         }
 
     }

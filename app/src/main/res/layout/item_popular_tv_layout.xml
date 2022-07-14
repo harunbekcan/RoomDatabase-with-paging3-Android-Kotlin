@@ -64,7 +64,7 @@
             tools:text="LANGUAGE" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/favoriteButtonImageView"
+            android:id="@+id/favoriteStatusButtonImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"

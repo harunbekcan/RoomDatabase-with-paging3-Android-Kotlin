@@ -8,9 +8,7 @@ import com.harunbekcan.roomdatabasewithpaging3project.data.local.database.Popula
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularTvDatabaseModel
 import com.harunbekcan.roomdatabasewithpaging3project.data.remote.PopularTvRemoteMediator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -21,7 +19,6 @@ class HomeViewModel @Inject constructor(
     private val serviceInterface: ServiceInterface,
     private val popularTvDatabase: PopularTvDatabase
 ) : ViewModel() {
-    @ExperimentalPagingApi
     fun getAllPopularTv(): Flow<PagingData<PopularTvDatabaseModel>> = Pager(
         config = PagingConfig(
             pageSize = 20,
@@ -37,9 +34,9 @@ class HomeViewModel @Inject constructor(
         )
     ).flow.cachedIn(viewModelScope).flowOn(Dispatchers.IO)
 
-    @OptIn(DelicateCoroutinesApi::class)
+
     fun changeStatus(id: Int, status: Int) {
-        GlobalScope.launch {
+        viewModelScope.launch {
             popularTvDatabase.getPopularTvDao().changeFavoriteStatus(id, status)
         }
     }

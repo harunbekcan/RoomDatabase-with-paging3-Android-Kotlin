@@ -25,4 +25,7 @@ interface PopularTvDao {
     @Query("UPDATE popularTv SET isFavorite = :status WHERE popularTvId=:id")
     suspend fun changeFavoriteStatus(id: Int, status: Int)
 
+    @Query("DELETE FROM popularTv WHERE popularTvId = :id")
+    suspend fun removePopularTvList(id: Int)
+
 }

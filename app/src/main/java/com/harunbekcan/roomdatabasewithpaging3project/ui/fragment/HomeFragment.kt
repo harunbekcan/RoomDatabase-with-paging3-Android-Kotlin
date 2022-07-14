@@ -1,12 +1,10 @@
 package com.harunbekcan.roomdatabasewithpaging3project.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import com.harunbekcan.roomdatabasewithpaging3project.R
 import com.harunbekcan.roomdatabasewithpaging3project.base.BaseFragment
@@ -21,7 +19,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(),
-    PopularTvPagingAdapter.FavoritesAdapterListener {
+    PopularTvPagingAdapter.AddToFavoritesAdapterListener {
 
     override fun getLayoutId(): Int = R.layout.fragment_home
 
@@ -41,7 +39,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         popularTvPagingAdapter.setListener(this)
     }
 
-    @OptIn(ExperimentalPagingApi::class)
     private fun pagingObserve() {
         lifecycleScope.launch {
             viewModel.getAllPopularTv().collectLatest { response ->
@@ -64,11 +61,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         }
     }
 
-    override fun favoritesPagingAdapterItemClicked(data: PopularTvDatabaseModel?, view: View) {
+    override fun addToFavoritesPagingAdapterItemClicked(data: PopularTvDatabaseModel?, view: View) {
         val isFavorite = if (data?.isFavorite == 0) 1 else 0
         data?.let {
             viewModel.changeStatus(it.popularTvId, isFavorite)
         }
     }
-
 }
