@@ -1,6 +1,8 @@
 package com.harunbekcan.roomdatabasewithpaging3project.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -8,6 +10,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import com.harunbekcan.roomdatabasewithpaging3project.R
 import com.harunbekcan.roomdatabasewithpaging3project.base.BaseFragment
+import com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularTvDatabaseModel
 import com.harunbekcan.roomdatabasewithpaging3project.databinding.FragmentHomeBinding
 import com.harunbekcan.roomdatabasewithpaging3project.ui.adapter.PopularTvPagingAdapter
 import com.harunbekcan.roomdatabasewithpaging3project.ui.viewmodel.HomeViewModel
@@ -17,7 +20,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(),
+    PopularTvPagingAdapter.FavoritesAdapterListener {
 
     override fun getLayoutId(): Int = R.layout.fragment_home
 
@@ -34,6 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun initAdapter() {
         binding.popularTvRecyclerView.adapter = popularTvPagingAdapter
+        popularTvPagingAdapter.setListener(this)
     }
 
     @OptIn(ExperimentalPagingApi::class)
@@ -56,6 +61,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 Toast.makeText(activity, errorState.error.localizedMessage, Toast.LENGTH_SHORT)
                     .show()
             }
+        }
+    }
+
+    override fun favoritesPagingAdapterItemClicked(data: PopularTvDatabaseModel?, view: View) {
+        val isFavorite = if (data?.isFavorite == 0) 1 else 0
+        data?.let {
+            viewModel.changeStatus(it.popularTvId, isFavorite)
         }
     }
 

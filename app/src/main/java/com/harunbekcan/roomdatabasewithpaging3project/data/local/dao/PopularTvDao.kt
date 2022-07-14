@@ -16,6 +16,13 @@ interface PopularTvDao {
     @Query("select * from popularTv")
     fun getPopularTvAll(): PagingSource<Int, PopularTvDatabaseModel>
 
+    @Query("select * from popularTv where isFavorite = 1")
+    fun getFavorites(): PagingSource<Int, PopularTvDatabaseModel>
+
     @Query("DELETE FROM popularTv")
     fun clearAll()
+
+    @Query("UPDATE popularTv SET isFavorite = :status WHERE popularTvId=:id")
+    suspend fun changeFavoriteStatus(id: Int, status: Int)
+
 }

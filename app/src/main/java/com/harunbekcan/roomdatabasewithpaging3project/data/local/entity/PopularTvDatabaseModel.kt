@@ -10,4 +10,5 @@ data class PopularTvDatabaseModel(
     val name: String,
     val original_language: String,
     val poster_path: String,
+    val isFavorite: Int = 0
 )
