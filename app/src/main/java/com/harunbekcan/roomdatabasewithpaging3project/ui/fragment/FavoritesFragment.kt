@@ -1,20 +1,16 @@
 package com.harunbekcan.roomdatabasewithpaging3project.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import com.blankj.utilcode.util.LogUtils
 import com.harunbekcan.roomdatabasewithpaging3project.R
 import com.harunbekcan.roomdatabasewithpaging3project.base.BaseFragment
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.entity.PopularTvDatabaseModel
 import com.harunbekcan.roomdatabasewithpaging3project.databinding.FragmentFavoritesBinding
 import com.harunbekcan.roomdatabasewithpaging3project.ui.adapter.FavoritesAdapter
 import com.harunbekcan.roomdatabasewithpaging3project.ui.viewmodel.FavoritesViewModel
-import com.harunbekcan.roomdatabasewithpaging3project.ui.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>(),
@@ -33,6 +29,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding>(),
         observeFavorites()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun observeFavorites() {
         viewModel.favoritesObserve.observe(viewLifecycleOwner) {
             viewModel.adapterList.clear()

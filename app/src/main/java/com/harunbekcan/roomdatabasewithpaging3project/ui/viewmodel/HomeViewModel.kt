@@ -19,6 +19,8 @@ class HomeViewModel @Inject constructor(
     private val serviceInterface: ServiceInterface,
     private val popularTvDatabase: PopularTvDatabase
 ) : ViewModel() {
+
+    @OptIn(ExperimentalPagingApi::class)
     fun getAllPopularTv(): Flow<PagingData<PopularTvDatabaseModel>> = Pager(
         config = PagingConfig(
             pageSize = 20,
