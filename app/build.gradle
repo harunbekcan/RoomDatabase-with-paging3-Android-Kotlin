@@ -78,7 +78,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     //Paging3
-    def paging_version = "3.1.1"
+    def paging_version = "3.2.0-alpha02"
     implementation "androidx.paging:paging-runtime:$paging_version"
 
     //Glide
