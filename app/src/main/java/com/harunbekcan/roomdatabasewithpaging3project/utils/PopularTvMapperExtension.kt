@@ -10,10 +10,10 @@ fun PopularTvResponse.mapDataToPopularTvItem(): PopularTvItem =
             page = page,
             popularTvList = results?.map {
                 PopularTvDatabaseModel(
-                    it.id ?: -1,
-                    it.name ?: "",
-                    it.original_language?: "",
-                    it.poster_path?: ""
+                    it?.id ?: -1,
+                    it?.name.orEmpty(),
+                    it?.original_language.orEmpty(),
+                    it?.poster_path.orEmpty()
                 )
             } ?: arrayListOf()
         )

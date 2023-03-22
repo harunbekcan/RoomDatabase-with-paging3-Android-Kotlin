@@ -26,4 +26,7 @@ interface PopularTvDao {
     @Query("UPDATE popularTv SET isFavorite = :status WHERE popularTvId=:id")
     suspend fun changeFavoriteStatus(id: Int, status: Int)
 
+    @Query("SELECT COUNT(popularTvId) from popularTv")
+    suspend fun getCount(): Int
+
 }

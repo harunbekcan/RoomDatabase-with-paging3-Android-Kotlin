@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.harunbekcan.roomdatabasewithpaging3project.R
 import com.harunbekcan.roomdatabasewithpaging3project.data.api.service.ServiceInterface
+import com.harunbekcan.roomdatabasewithpaging3project.data.local.dao.RemoteKeysDao
 import com.harunbekcan.roomdatabasewithpaging3project.data.local.database.PopularTvDatabase
 import com.harunbekcan.roomdatabasewithpaging3project.utils.Constant.BASE_URL
 import com.harunbekcan.roomdatabasewithpaging3project.utils.CustomHttpLogger
@@ -87,5 +88,9 @@ object AppModule {
     @Singleton
     fun providesPopularTvDao(popularTvDatabase: PopularTvDatabase) =
         popularTvDatabase.getPopularTvDao()
+
+    @Provides
+    @Singleton
+    fun providesRemoteKeysDao(popularTvDatabase: PopularTvDatabase): RemoteKeysDao = popularTvDatabase.remoteKeysDao()
 
 }

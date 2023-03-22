@@ -44,7 +44,7 @@ class PopularTvPagingAdapter
                 }
 
                 favoriteStatusButtonImageView.setOnClickListener {
-                    listener?.addToFavoritesPagingAdapterItemClicked(popularTvDatabaseModel, it)
+                    listener?.addToFavoritesPagingAdapterItemClicked(popularTvDatabaseModel,it)
                 }
             }
         }

@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import com.harunbekcan.roomdatabasewithpaging3project.R
 import com.harunbekcan.roomdatabasewithpaging3project.base.BaseFragment
@@ -40,7 +39,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         popularTvPagingAdapter.setListener(this)
     }
 
-    @OptIn(ExperimentalPagingApi::class)
+
     private fun pagingObserve() {
         lifecycleScope.launch {
             viewModel.getAllPopularTv().collectLatest { response ->
